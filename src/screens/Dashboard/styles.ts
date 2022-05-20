@@ -9,5 +9,6 @@ export const Container = styled.View`
 `
 
 export const Text = styled.Text`
-
+    font-family: ${({ theme }) => theme.fonts.regular};
+    font-size: 28px;
 `
