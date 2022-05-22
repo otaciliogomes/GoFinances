@@ -1,4 +1,5 @@
 import React from 'react'
+import { HighlightCard } from '../../components/HighlightCard'
 
 
 
@@ -19,7 +20,12 @@ export const Dashboard = () => {
           <S.Icon name="power"/>
         </S.UserWrap>
       </S.Header>
-    
+    <S.HighlightCards>
+      <HighlightCard />
+      <HighlightCard />
+      <HighlightCard />
+    </S.HighlightCards>
+
     </S.Container>
   )
 }
