@@ -8,26 +8,25 @@ interface TypeProps {
 }
 
 export const Container = styled.View<TypeProps>`
-    background-color: ${
-        ({ theme, type }) => type !== 'total'
-        ? theme.colors.shape
-        : theme.colors.secondary
-    };
+  background-color: ${
+      ({ theme, type }) => type !== 'total'
+      ? theme.colors.shape
+      : theme.colors.secondary
+  };
 
 
-    border-radius: 5px;
-    padding: 19px 23px;
-    padding-bottom: ${RFValue(42)}px;
-    margin-right: ${RFValue(26)}px;
+  border-radius: 5px;
+  padding: 19px 23px;
+  padding-bottom: ${RFValue(30)}px;
+  margin-right: ${RFValue(26)}px;
 
-    width: ${RFValue(300)}px;
-    height: 300px;
+  width: ${RFValue(300)}px;
 `
 
 export const Header = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
 `
 
 export const Title = styled.Text`
