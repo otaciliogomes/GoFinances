@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { 
-    Input , 
-    Button, 
-    ButtonTransactionType
+import {
+    Input,
+    Button,
+    ButtonTransactionType,
+    CategorySelect
 } from '../../components'
 
 import * as S from './styles'
@@ -10,7 +11,7 @@ import * as S from './styles'
 export const Register = () => {
     const [transactionType, setTransactionType] = useState('')
 
-    function handleTransactionType( type: 'up' | 'down' ) {
+    function handleTransactionType(type: 'up' | 'down') {
         setTransactionType(type)
     }
 
@@ -23,27 +24,29 @@ export const Register = () => {
                 <S.Fields>
                     <Input
                         placeholder='Nome'
-                        
-                        />
+
+                    />
                     <Input
                         placeholder='Preço'
                         keyboardType='number-pad'
                     />
-                <S.TransactionTypeContainer>
-                    <ButtonTransactionType
-                        title='Income'
-                        type='up'
-                        isActive={transactionType === 'up'}
-                        onPress={() => handleTransactionType('up')}
-                    />
-                    <ButtonTransactionType
-                        title='Outcome'
-                        type='down'
-                        isActive={transactionType === 'down'}
-                        onPress={() => handleTransactionType('down')}
-                    />
-                </S.TransactionTypeContainer>
-                </S.Fields>     
+                    <S.TransactionTypeContainer>
+                        <ButtonTransactionType
+                            title='Income'
+                            type='up'
+                            isActive={transactionType === 'up'}
+                            onPress={() => handleTransactionType('up')}
+                        />
+                        <ButtonTransactionType
+                            title='Outcome'
+                            type='down'
+                            isActive={transactionType === 'down'}
+                            onPress={() => handleTransactionType('down')}
+                        />
+                    </S.TransactionTypeContainer>
+
+                    <CategorySelect title='Categoria' />
+                </S.Fields>
                 <Button
                     title='Enviar'
                 />

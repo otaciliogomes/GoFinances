@@ -40,5 +40,5 @@ export const TransactionTypeContainer = styled.View`
 
     justify-content: space-between;
 
-    margin: 8px 0px;
+    margin: 8px 0px 16px 0px;
 `
