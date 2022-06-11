@@ -4,6 +4,10 @@ import { Feather } from '@expo/vector-icons'
 import { FlatList, FlatListProps } from 'react-native'
 import { CategoryProps } from '.'
 
+interface CategoryPropsStyle {
+    isActive: boolean
+}
+
 export const Container = styled.View`
     flex: 1;
     background-color: ${({ theme }) => theme.colors.background};
@@ -46,13 +50,15 @@ export const Icon = styled(Feather)`
     margin-right: 16px;
 `
 
-export const Category = styled.View`
+export const Category = styled.TouchableOpacity<CategoryPropsStyle>`
     width: 100%;
     padding: ${RFValue(15)}px;
 
     flex-direction: row;
 
     align-items: center;
+
+    background-color: ${({ theme, isActive }) => isActive ?  theme.colors.secondary_light : theme.colors.shape};
 `
 
 export const Separator = styled.View`

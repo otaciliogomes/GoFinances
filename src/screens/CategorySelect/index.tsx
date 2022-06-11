@@ -7,8 +7,8 @@ import { Button } from '../../components'
 export interface CategoryProps {
     key: string
     name: string
-    icon: string
-    color: string
+    icon?: string
+    color?: string
 }
 
 interface CategoryCardProps {
@@ -16,7 +16,7 @@ interface CategoryCardProps {
 }
 
 interface Props {
-    category: string
+    category: CategoryProps
     setCategory: (category: CategoryProps) => void
     closeCategory: () => void
 }
@@ -30,7 +30,10 @@ export const CategorySelect = ({
 
     function CategoryCard ({ item }: CategoryCardProps) {
         return (
-            <S.Category>
+            <S.Category 
+                onPress={() => setCategory(item)}
+                isActive={item.key === category.key}
+            >
                 <S.Icon name={item.icon}/>
                 <S.Label>{item.name}</S.Label>
             </S.Category>
@@ -49,7 +52,10 @@ export const CategorySelect = ({
                 ItemSeparatorComponent={() => <S.Separator />}
             />
             <S.Footer>
-                <Button title="Selecionar"/>
+                <Button 
+                    title="Selecionar"
+                    onPress={closeCategory}
+                />
             </S.Footer>
         </S.Container>
     )
