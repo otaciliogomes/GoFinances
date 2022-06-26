@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Modal } from 'react-native'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as Yup from "yup"
+
+import { Modal, TouchableNativeFeedback, Keyboard, Alert } from 'react-native'
 import {
     Input,
     Button,
@@ -17,33 +20,51 @@ interface FormData {
     amount: string;
 }
 
+const schema = Yup.object().shape({
+    name: Yup.string().required('Nome é obrigatório'),
+    amount: Yup
+        .number()
+        .typeError('Informe um valor numérico')
+        .positive('O valor não pode ser negativo')
+        .required('Valor obrigatório')
+})
+
 export const Register = () => {
-    const [transactionType, setTransactionType] = useState('')
+    const [transactionType, setTransactionType] = useState('category')
     const [categoryModalOpen, setCategoryModalOpen] = useState(false)
     const [category, setCategory] = useState({} as CategoryProps)
 
-    const { 
+    const {
         control,
-        handleSubmit
-     } = useForm()
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(schema)
+    })
 
     function handleTransactionType(type: 'up' | 'down') {
         setTransactionType(type)
     }
 
-    function handleCloseModalCategory () {
+    function handleCloseModalCategory() {
         setCategoryModalOpen(false)
     }
 
-    function handleOpenModalCategory () {
+    function handleOpenModalCategory() {
         setCategoryModalOpen(true)
     }
 
-    function handleSelectCategory (item: CategoryProps) {
+    function handleSelectCategory(item: CategoryProps) {
         setCategory(item)
     }
 
     function handleRegister(form: FormData) {
+        if (!transactionType)
+            return Alert.alert('Selecione o tipo de transação')
+
+        if (category.key === 'category')
+            return Alert.alert('Selecione a categoria')
+
         const data = {
             name: form.name,
             amount: form.amount,
@@ -53,60 +74,68 @@ export const Register = () => {
         console.log(data);
     }
 
+    /*
+        Consultar a mudança de opacidade ao clicar no background
+    */
+
     return (
-        <S.Container>
-            <S.Header>
-                <S.Title>Cadastro</S.Title>
-            </S.Header>
-            <S.Form>
-                <S.Fields>
-                    <InputForm
-                        name="name"
-                        placeholder='Nome'
-                        control={control}
-                    />
-
-                    <InputForm
-                        name="amount"
-                        placeholder='Preço'
-                        keyboardType='number-pad'
-                        control={control}
-                    />
-                    <S.TransactionTypeContainer>
-                        <ButtonTransactionType
-                            title='Income'
-                            type='up'
-                            isActive={transactionType === 'up'}
-                            onPress={() => handleTransactionType('up')}
+        <TouchableNativeFeedback onPress={Keyboard.dismiss}>
+            <S.Container>
+                <S.Header>
+                    <S.Title>Cadastro</S.Title>
+                </S.Header>
+                <S.Form>
+                    <S.Fields>
+                        <InputForm
+                            name="name"
+                            placeholder='Nome'
+                            control={control}
+                            autoCapitalize="sentences"
+                            error={errors.name && errors.name.message}
                         />
-                        <ButtonTransactionType
-                            title='Outcome'
-                            type='down'
-                            isActive={transactionType === 'down'}
-                            onPress={() => handleTransactionType('down')}
+
+                        <InputForm
+                            name="amount"
+                            placeholder='Preço'
+                            keyboardType='number-pad'
+                            control={control}
+                            error={errors.amount && errors.amount.message}
                         />
-                    </S.TransactionTypeContainer>
+                        <S.TransactionTypeContainer>
+                            <ButtonTransactionType
+                                title='Income'
+                                type='up'
+                                isActive={transactionType === 'up'}
+                                onPress={() => handleTransactionType('up')}
+                            />
+                            <ButtonTransactionType
+                                title='Outcome'
+                                type='down'
+                                isActive={transactionType === 'down'}
+                                onPress={() => handleTransactionType('down')}
+                            />
+                        </S.TransactionTypeContainer>
 
-                    <CategorySelectButton 
-                        title={category.name || 'Categoria'}
-                        onPress={handleOpenModalCategory}
+                        <CategorySelectButton
+                            title={category.name || 'Categoria'}
+                            onPress={handleOpenModalCategory}
+                        />
+                    </S.Fields>
+                    <Button
+                        title='Enviar'
+                        onPress={handleSubmit(handleRegister)}
                     />
-                </S.Fields>
-                <Button
-                    title='Enviar'
-                    onPress={handleSubmit(handleRegister)}
-                />
-            </S.Form>
+                </S.Form>
 
-            <Modal visible={categoryModalOpen}>
-                <CategorySelect
-                    category={category}
-                    closeCategory={handleCloseModalCategory}
-                    setCategory={handleSelectCategory}
-                />
-            </Modal>
-
-        </S.Container>
+                <Modal visible={categoryModalOpen}>
+                    <CategorySelect
+                        category={category}
+                        closeCategory={handleCloseModalCategory}
+                        setCategory={handleSelectCategory}
+                    />
+                </Modal>
+            </S.Container>
+        </TouchableNativeFeedback>
     )
 }
 

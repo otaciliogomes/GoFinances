@@ -14,7 +14,6 @@ export const Container = styled.View<TypeProps>`
       : theme.colors.secondary
   };
 
-
   border-radius: 5px;
   padding: 19px 23px;
   padding-bottom: ${RFValue(30)}px;

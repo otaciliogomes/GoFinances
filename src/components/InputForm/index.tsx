@@ -9,12 +9,14 @@ import * as S from './styles'
 
 interface Props extends TextInputProps {
     control: Control,
-    name: string
+    name: string,
+    error: string
 }
 
 export const InputForm = ({
     control,
     name,
+    error,
     ...rest
 }: Props) => {
     return (
@@ -30,6 +32,7 @@ export const InputForm = ({
                 )}
                 name={name}
             />
+          {error &&  <S.Error>{error}</S.Error>}
         </S.Container>
     )
 }
