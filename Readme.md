@@ -1,0 +1,1 @@
+Voltar e refatorar os botões para gesturehandler

@@ -54,7 +54,9 @@ export const Dashboard = () => {
               <S.UserName>Otacílio</S.UserName>
             </S.User>
           </S.UserInfo>
-          <S.Icon name="power"/>
+          <S.LogoutButton onPress={() => {}}>
+            <S.Icon name="power"/>
+          </S.LogoutButton>
         </S.UserWrap>
       </S.Header>
     <S.HighlightCards>
