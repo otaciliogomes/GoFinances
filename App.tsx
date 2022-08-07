@@ -1,6 +1,10 @@
+import 'intl'
+import 'intl/locale-data/jsonp/pt-BR'
+
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import * as SplashScreen from 'expo-splash-screen'
+
 import {
   useFonts,
   Poppins_400Regular,

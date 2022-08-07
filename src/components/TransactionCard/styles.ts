@@ -57,7 +57,7 @@ export const Date = styled.Text`
 
 export const Amount = styled.Text<TransactionProps>`
     color: ${({ theme, type }) => 
-        type === 'positive' ? theme.colors.success :  theme.colors.attention
+        type === 'up' ? theme.colors.success :  theme.colors.attention
     };
 
     font-family: ${({ theme }) => theme.fonts.regular};

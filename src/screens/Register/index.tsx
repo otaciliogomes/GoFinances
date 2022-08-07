@@ -79,9 +79,10 @@ export const Register = () => {
             id: uuid.v4(),
             name: form.name,
             amount: form.amount,
-            category: category.name,
+            category: category.key,
             transactionType,
-            date: new Date()
+            date: new Date(),
+            type: transactionType
         }
 
         try {
