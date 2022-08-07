@@ -13,6 +13,12 @@ export const Container = styled.View`
     background-color: ${({ theme }) => theme.colors.background};
 `
 
+export const ContainerLoading = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+`
+
 export const Header = styled.View`
     width: 100%;
     height: ${RFPercentage(42)}px;
@@ -100,9 +106,9 @@ export const Title = styled.Text`
 `
 
 export const TransactionList = styled(
-        FlatList as new (props: FlatListProps<DataTransactionList>) => 
+    FlatList as new (props: FlatListProps<DataTransactionList>) =>
         FlatList<DataTransactionList>
-    ).attrs({
+).attrs({
     showsVerticalScrollIndicator: false,
     contentContainerStyle: { paddingBottom: getBottomSpace() }
-})``as unknown as typeof FlatList;
+})`` as unknown as typeof FlatList;

@@ -111,16 +111,6 @@ export const Register = () => {
 
     }
 
-    useEffect(() => {
-        async function loadData() {
-
-            const data = await AsyncStorage.getItem(dataKey)
-            console.log(JSON.parse(data!));
-        }
-
-        loadData()
-    }, [])
-
     /*
         Consultar a mudança de opacidade ao clicar no background
     */
@@ -138,7 +128,7 @@ export const Register = () => {
                             placeholder='Nome'
                             control={control}
                             autoCapitalize="sentences"
-                            error={errors.name && errors.name.message}
+                            error={errors.name! && errors.name.message!}
                         />
 
                         <InputForm

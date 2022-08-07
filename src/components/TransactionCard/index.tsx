@@ -20,7 +20,7 @@ export const TransactionCard = ({ data }: Data) => {
   const category = categories.filter(
     item => item.key === data.category
   )[0]
-  console.log('%cindex.tsx line:23 data', 'color: #007acc;', data);
+
   return (
     <S.Container>
       <S.Title>{data.name}</S.Title>
