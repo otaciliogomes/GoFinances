@@ -48,3 +48,10 @@ export const Footer = styled.View`
 
     background-color: ${theme.colors.secondary};
 `
+
+export const FooterWrapper = styled.View`
+    margin-top: ${RFValue(-8)}px;
+    padding: 0 32px;
+
+    justify-content: space-between;
+`

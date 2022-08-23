@@ -2,6 +2,9 @@ import React from 'react'
 import { RFValue } from 'react-native-responsive-fontsize'
 
 import Logo from '../../assets/logo-name.svg'
+import Google from '../../assets/google.svg'
+import Apple from '../../assets/apple.svg'
+import { SignInSocialButton } from '../../components'
 
 import * as S from './styles'
 
@@ -26,7 +29,16 @@ export const SignIn = () => {
                 </S.TitleWrapper>
             </S.Header>
             <S.Footer>
-                
+                <S.FooterWrapper>
+                    <SignInSocialButton
+                        title='Entrar com Google'
+                        svg={Google}
+                    />
+                    <SignInSocialButton
+                        title='Entrar com Apple'
+                        svg={Apple}
+                    />
+                </S.FooterWrapper>
             </S.Footer>
         </S.Container>
     )
