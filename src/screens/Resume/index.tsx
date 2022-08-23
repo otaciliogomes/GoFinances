@@ -11,6 +11,7 @@ import * as S from './styles'
 import { useTheme } from 'styled-components'
 import { addMonths, format, subMonths } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { ActivityIndicator } from 'react-native'
 
 
 interface CategoryData {
@@ -23,9 +24,11 @@ interface CategoryData {
 
 export const Resume = () => {
     const [selectedDate, setSelectedDate] = useState(new Date())
+    const [loading, setLoading] = useState(true)
     const [categoryData, setCategoryDate] = useState<CategoryData[]>([])
 
     function handleDateChange(action: 'next' | 'prev') {
+        setLoading(true)
         if (action === 'next') {
             setSelectedDate(addMonths(selectedDate, 1))
         } else {
@@ -39,7 +42,7 @@ export const Resume = () => {
         const responseFormatted = response ? JSON.parse(response) : [];
 
         const expensives = responseFormatted
-            .filter((expensive: TransactionCardProps) => 
+            .filter((expensive: TransactionCardProps) =>
                 expensive.type === 'down' &&
                 new Date(expensive.date).getMonth() === selectedDate.getMonth() &&
                 new Date(expensive.date).getFullYear() === selectedDate.getFullYear()
@@ -81,6 +84,7 @@ export const Resume = () => {
         })
 
         setCategoryDate(totalByCategory)
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -96,6 +100,7 @@ export const Resume = () => {
             <S.Header>
                 <S.Title>Resumo por categoria</S.Title>
             </S.Header>
+
             <S.MothSelect>
                 <S.MothSelectButton onPress={() => handleDateChange('prev')}>
                     <S.SelectIcon name="chevron-left" />
@@ -109,32 +114,38 @@ export const Resume = () => {
                     <S.SelectIcon name="chevron-right" />
                 </S.MothSelectButton>
             </S.MothSelect>
-            <S.Content>
+            {loading
+                ?
+                <ActivityIndicator size="large" />
+                :
+                <S.Content>
 
-                <S.ChartContainer>
-                    <VictoryPie
-                        data={categoryData}
-                        colorScale={categoryData.map(category => category.color)}
-                        style={{
-                            labels: {
-                                fontSize: RFValue(18),
-                                fontWeight: 'bold',
-                            }
-                        }}
-                        labelRadius={150}
-                        x="percent"
-                        y="total"
-                    />
-                </S.ChartContainer>
-                {categoryData.map((category, index) => (
-                    <HistoryCard
-                        key={index}
-                        amount={category.totalFormatted}
-                        title={category.name}
-                        color={category.color}
-                    />
-                ))}
-            </S.Content>
+                    <S.ChartContainer>
+                        <VictoryPie
+                            data={categoryData}
+                            colorScale={categoryData?.map(category => category.color)}
+                            style={{
+                                labels: {
+                                    fontSize: RFValue(18),
+                                    fontWeight: 'bold',
+                                }
+                            }}
+                            labelRadius={150}
+                            x="percent"
+                            y="total"
+                        />
+                    </S.ChartContainer>
+                    {categoryData.map((category, index) => (
+                        <HistoryCard
+                            key={index}
+                            amount={category.totalFormatted}
+                            title={category.name}
+                            color={category.color}
+                        />
+                    ))}
+                </S.Content>
+            }
+
         </S.Container>
     )
 }
