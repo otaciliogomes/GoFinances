@@ -93,9 +93,7 @@ export const Dashboard = () => {
         }
       })
 
-    const lastTransactionEntries = getLastTransactionDate(
-      
-      , 'up')
+    const lastTransactionEntries = getLastTransactionDate(transactions, 'up')
     const lastTransactionExpensive = getLastTransactionDate(transactions, 'down')
     const totalInterval = lastTransactionExpensive === 0 
     ? 'Não há transações' 

@@ -4,10 +4,12 @@
     "slug": "gofinances",
     "scheme": "gofinances",
     "version": "1.0.0",
+    "icon": "./src/assets/icon_app.png",
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": ""
+    "description": "You app for person finances | Seu app de finanças pessoais",
+    "githubUrl": "https://github.com/otaciliogomes/GoFinances"
   },
   "name": "gofinances"
 }
