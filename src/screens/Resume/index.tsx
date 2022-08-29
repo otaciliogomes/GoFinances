@@ -12,6 +12,7 @@ import { useTheme } from 'styled-components'
 import { addMonths, format, subMonths } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ActivityIndicator } from 'react-native'
+import { useAuth } from '../../hooks/auth'
 
 
 interface CategoryData {
@@ -23,6 +24,7 @@ interface CategoryData {
 }
 
 export const Resume = () => {
+    const { user } = useAuth()
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [loading, setLoading] = useState(true)
     const [categoryData, setCategoryDate] = useState<CategoryData[]>([])
@@ -37,7 +39,7 @@ export const Resume = () => {
     }
 
     async function loadData() {
-        const dataKey = '@gofinances:transaction'
+        const dataKey = `@gofinances:transactions_user:${user.id}`
         const response = await AsyncStorage.getItem(dataKey)
         const responseFormatted = response ? JSON.parse(response) : [];
 

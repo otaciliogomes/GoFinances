@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { HighlightCard, TransactionCard, TransactionCardProps } from '../../components'
 import * as S from './styles'
+import { useAuth } from '../../hooks/auth'
 
 export interface DataTransactionList extends TransactionCardProps {
   id: string
@@ -24,6 +25,7 @@ interface HighlightCardsData {
 
 
 export const Dashboard = () => {
+  const { user, signOut } = useAuth()
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<DataTransactionList[]>([])
   const [highlightCardsData, setHighlightCardsData] = useState<HighlightCardsData>({} as HighlightCardsData)
@@ -35,13 +37,17 @@ export const Dashboard = () => {
     collection: DataTransactionList[],
     type: 'up' | 'down'
   ) {
+    const collectionFiltered = collection
+      .filter(item => item.type === type)
+
     const lastTransaction = new Date(
-      Math.max.apply(Math, collection
-        .filter(item => item.type === type)
+      Math.max.apply(Math, collectionFiltered
         .map(item => new Date(item.date).getTime())
       ))
 
-
+    if (collectionFiltered.length === 0) {
+      return 0
+    }
 
     return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', {
       month: 'long'
@@ -49,7 +55,7 @@ export const Dashboard = () => {
   }
 
   async function loadTransaction() {
-    const dataKey = '@gofinances:transaction'
+    const dataKey = `@gofinances:transactions_user:${user.id}`
 
     const response = await AsyncStorage.getItem(dataKey)
     const transactions = response ? JSON.parse(response!) : []
@@ -87,9 +93,13 @@ export const Dashboard = () => {
         }
       })
 
-    const lastTransactionEntries = getLastTransactionDate(transactions, 'up')
+    const lastTransactionEntries = getLastTransactionDate(
+      
+      , 'up')
     const lastTransactionExpensive = getLastTransactionDate(transactions, 'down')
-    const totalInterval = `01 a ${lastTransactionExpensive}`
+    const totalInterval = lastTransactionExpensive === 0 
+    ? 'Não há transações' 
+    : `01 a ${lastTransactionExpensive}`
 
     const total = entriesTotal - expensiveTotal
 
@@ -99,14 +109,18 @@ export const Dashboard = () => {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Ultima entrada dia ${lastTransactionEntries}`
+        lastTransaction: lastTransactionEntries === 0
+          ? 'Não há transações'
+          : `Ultima entrada dia ${lastTransactionEntries}`
       },
       expensive: {
         total: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Ultima saída dia ${lastTransactionExpensive}`
+        lastTransaction: lastTransactionExpensive === 0
+            ? 'Não há transações'
+            : `Ultima saída dia ${lastTransactionExpensive}`
       },
       total: {
         total: total.toLocaleString('pt-BR', {
@@ -145,13 +159,13 @@ export const Dashboard = () => {
             <S.Header>
               <S.UserWrap>
                 <S.UserInfo>
-                  <S.Photo source={{ uri: 'https://avatars.githubusercontent.com/u/553862?v=4' }} />
+                  <S.Photo source={{ uri: user.photo ? user.photo : 'https://avatars.githubusercontent.com/u/553862?v=4' }} />
                   <S.User>
                     <S.UserGreeting>Olá, </S.UserGreeting>
-                    <S.UserName>Otacílio</S.UserName>
+                    <S.UserName>{user.name}</S.UserName>
                   </S.User>
                 </S.UserInfo>
-                <S.LogoutButton onPress={() => { }}>
+                <S.LogoutButton onPress={signOut}>
                   <S.Icon name="power" />
                 </S.LogoutButton>
               </S.UserWrap>

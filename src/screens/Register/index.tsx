@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as Yup from "yup"
 import uuid from 'react-native-uuid'
 import { useNavigation } from '@react-navigation/native'
+import { useAuth } from '../../hooks/auth'
 
 import { Modal, TouchableNativeFeedback, Keyboard, Alert } from 'react-native'
 import {
@@ -34,6 +35,7 @@ const schema = Yup.object().shape({
 
 export const Register = () => {
     const navigation = useNavigation()
+    const { user } = useAuth()
     const [transactionType, setTransactionType] = useState('category')
     const [categoryModalOpen, setCategoryModalOpen] = useState(false)
     const [category, setCategory] = useState({
@@ -41,7 +43,7 @@ export const Register = () => {
         name: 'Categoria'
     } as CategoryProps)
 
-    const dataKey = '@gofinances:transaction'
+    const dataKey = `@gofinances:transactions_user:${user.id}`
 
     const {
         control,
